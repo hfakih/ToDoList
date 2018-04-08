@@ -1,0 +1,222 @@
+<?php
+	//PHP Code
+?>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>ToDo-List</title>
+	
+	
+	<!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/jquery-ui.css" rel="stylesheet">
+	<link href="font-awesome/css/font-awesome.min.css" rel="stylesheet">	
+	<link href="css/adjust-bootstrap.css" rel="stylesheet">
+	<link href="css/style.css" rel="stylesheet">
+	
+	
+	<!-- Angular js -->
+	<script src="js/angular/angular.js"></script>
+	<script src="js/angular/angular-route.js"></script>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+	<div class="container">
+		<div class="row">
+			<h2 style="text-align:center">ToDo-List</h2>
+		</div>
+		<div ng-app="toDoListApp"  ng-controller="categories" class="row">
+			<div class="col-md-4 col-lg-4 col-xl-4">
+				<div class="btn-group">
+					  <a href="#!add" class="btn btn-primary btn-feature-xs btn-feature-sm btn-feature-md btn-feature-lg">Create New</a>
+					  <a  href="#!deleteCompleted" class="btn btn-primary btn-feature-xs btn-feature-sm btn-feature-md btn-feature-lg">Delete Completed Tasks</a>
+					  <a href="#/!" class="btn btn-primary btn-feature-xs btn-feature-sm btn-feature-md btn-feature-lg">List Tasks</a>
+					  <a  href="#!completed"  class="btn btn-primary btn-feature-xs btn-feature-sm btn-feature-md btn-feature-lg">List Completed Tasks</a>
+					  <a href="#!new" class="btn btn-primary btn-feature-xs btn-feature-sm btn-feature-md btn-feature-lg">List New Tasks</a>
+				 </div>
+			</div>
+			<div  class="col-md-8 col-lg-8"> 
+				 <div ng-view></div> 
+			</div>
+		</div>
+	</div>  
+  
+  
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+	<!-- JQuery UI -->
+	<script src="js/jquery-ui/jquery-ui.min.js"></script>
+	
+	
+	<script>
+		var app = angular.module('toDoListApp',  ["ngRoute"]);
+		
+		app.controller('main', function($scope, $http){
+			
+			$scope.listTasks=function(){
+				$http.get('scripts/list.php').then(function(response){
+				$scope.tasks = response.data;				
+				})			
+			}
+			
+			$scope.listTasks();				
+		});
+		
+		app.controller('view',function($scope,$http,$routeParams){
+			
+			$scope.viewTaskById=function(id){
+				$http.get('scripts/view.php?id='+id).then(function(response){
+				
+				var tmp =response.data;
+				$scope.task= tmp[0];
+				
+				})			
+			} 
+			var a = $routeParams.a;
+			$scope.viewTaskById(a);
+		});
+		app.controller('add',function($scope,$http){
+				$scope.insertdata = function(){
+					$http.post('scripts/add.php', {'title':$scope.title,'category':$scope.category}).then(function(){
+						$scope.msg="Task added!";
+					})
+				}	
+		
+		});
+		app.controller('completed',function($scope,$http){
+				$scope.listCompletedTasks = function(){
+					$http.get('scripts/completed.php').then(function(response){
+						$scope.completedTasks= response.data;
+						
+					})
+				}	
+				$scope.listCompletedTasks();
+		});
+		app.controller('new',function($scope,$http){
+				$scope.listNewTasks = function(){
+					$http.get('scripts/new.php').then(function(response){
+						$scope.newTasks= response.data;
+						
+					})
+				}	
+				$scope.listNewTasks();
+		});
+		app.controller('main2',function($scope,$http){
+				$scope.listTasks=function(){
+					$http.get('scripts/list.php').then(function(response){
+					$scope.tasks = response.data;				
+					})			
+				}
+			
+			
+				$scope.deleteCompletedTasks = function(){
+					$http.get('scripts/deleteCompleted.php').then(function(response){
+						$scope.deleteCompletedMsg = response.data;
+						$scope.listTasks();	
+					})
+				}
+				
+				$scope.deleteCompletedTasks();
+		});
+		app.controller('categories',function($scope,$http,$timeout){
+				
+				$scope.getCategories = function(){
+					$http.get('scripts/categories.php').then(function(response){
+						$scope.categories = response.data;						
+					})		
+				}	
+				
+				$scope.getCategories();
+				
+				$scope.checked = [];
+				
+				$scope.toggleSelection=function(id){
+					$scope.id = id;
+					$scope.checked[$scope.id ] = !$scope.checked[$scope.id ];		
+					if($scope.checked[$scope.id ]){
+						$scope.completed = 1;
+					}
+					else{
+						$scope.completed = 0;
+					}
+					$scope.updateTaskById = function(id){
+						$http.get('scripts/update.php?id='+ $scope.id + "&completed=" + $scope.completed).then(function(response){
+							$scope.mainMsg = response.data;						
+						})		
+					}
+					$scope.updateTaskById($scope.id);
+					
+				}
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+		});		
+		app.config(function($routeProvider) {
+				$routeProvider
+				
+				.when("/", {
+					templateUrl : "sites/main.htm",
+					controller: "main"
+				})	
+				.when("/view/:a", {
+					templateUrl : "sites/view.htm",
+					controller: "view"
+				})	
+				.when("/add", {
+					templateUrl : "sites/add.htm",
+					controller: "add"
+				})	
+				.when("/completed", {
+					templateUrl : "sites/completed.htm",
+					controller: "completed"
+				})
+				.when("/new", {
+					templateUrl : "sites/new.htm",
+					controller: "new"
+				})
+				.when("/deleteCompleted", {
+					templateUrl : "sites/main2.htm",
+					controller: "main2"
+				})
+			});
+		app.directive('ngConfirmMessage', [function () {
+			return {
+				restrict: 'A',
+				link: function (scope, element, attrs) {
+					element.on('click', function (e) {
+						var message = attrs.ngConfirmMessage || "Are you sure ?";
+						if (!confirm(message)) {
+							e.stopImmediatePropagation();
+						}
+					});
+				}
+			}
+		}]);
+			
+	
+			
+		 
+		
+		
+	</script>
+   </body>
+</html>

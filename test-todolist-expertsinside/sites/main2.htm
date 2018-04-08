@@ -1,0 +1,25 @@
+{{deleteCompletedMsg}}
+<table class="table table-hover hide-xs">
+<thead>
+  <tr>
+	<th class="th-title-sm th-title-md th-title-lg th-title-xl">Title</th>
+	<th class="th-view-sm th-view-md th-view-lg">View Task</th>
+	<th class="th-set2comp-sm th-set2comp-md th-set2comp-lg th-set2comp-xl">Set Task To Completed</th>
+  </tr>
+</thead>
+<tbody>
+  <tr ng-repeat="task in tasks">
+	<td class="td-title-sm td-title-md td-title-lg td-title-xl">{{ task.title }}</td>
+	<td class="td-view td-view-sm td-view-md td-view-lg"><a href="#!view/{{ task.id }}"><i class="fa fa-eye"></i></a></td>
+	
+	
+	<td  class="td-set2comp td-set2comp-sm td-set2comp-md td-set2comp-lg td-set2comp-xl">
+		<input ng-if="task.completed == 1" type="checkbox" checked>
+		<input ng-if="task.completed == 0" type="checkbox">
+	</td>
+  </tr>						  
+</tbody>
+</table>
+<ul class="list-group show-xs hide-sm hide-md hide-lg hide-xl" style="margin-top:12px;">
+  <li ng-repeat="task in tasks" class="list-group-item">{{ task.title }} <span class="badge"><a href="#!view/{{ task.id }}" style="display:table-cell; vertical-align:middle;"><i class="fa fa-eye"></i></a>&nbsp;&nbsp;<input ng-if="task.completed == 1" type="checkbox" checked><input ng-if="task.completed == 0" type="checkbox"></span></span></li>
+</ul>
