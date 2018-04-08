@@ -1,11 +1,9 @@
-{{mainMsg}}
-
 <table class="table table-hover hide-xs">
 <thead>
   <tr>
 	<th class="th-title-sm th-title-md th-title-lg th-title-xl">Title</th>
-	<th class="th-view-sm th-view-md th-view-lg">View Task</th>
-	<th class="th-set2comp-sm th-set2comp-md th-set2comp-lg th-set2comp-xl">Set Task To Completed</th>
+	<th class="th-view th-view-sm th-view-md th-view-lg">View</th>
+	<th class="th-set2comp th-set2comp-sm th-set2comp-md th-set2comp-lg th-set2comp-xl">Completed</th>
   </tr>
 </thead>
 <tbody>
@@ -15,10 +13,6 @@
 	
 	
 	<td  class="td-set2comp td-set2comp-sm td-set2comp-md td-set2comp-lg td-set2comp-xl">
-		<!--
-		<input  id="{{task.id}}" ng-change="toggleSelection(task.id)" ng-model="checked" ng-init="initCheck(task.id,task.completed)" ng-if="task.completed == 1" type="checkbox">
-		<input  id="{{task.id}}" ng-change="toggleSelection(task.id)" ng-model="checked" ng-init="initCheck(task.id,task.completed)" ng-false-value="false" ng-true-value="true" ng-if="task.completed == 0" type="checkbox">
-		-->
 		<input  id="{{task.id}}"  ng-model="checked" ng-click="toggleSelection(task.id)" ng-init="checked[task.id]=false" ng-if="task.completed == 0" type="checkbox">
 		<input  id="{{task.id}}"  ng-model="checked" ng-click="toggleSelection(task.id)" ng-init="checked[task.id]=true" ng-if="task.completed == 1" type="checkbox" ng-checked="true">
 	</td>
@@ -26,5 +20,10 @@
 </tbody>
 </table>
 <ul class="list-group show-xs hide-sm hide-md hide-lg hide-xl" style="margin-top:12px;">
-  <li ng-repeat="task in tasks" class="list-group-item">{{ task.title }} <span class="badge"><a href="#!view/{{ task.id }}" style="display:table-cell; vertical-align:middle;"><i class="fa fa-eye"></i></a>&nbsp;&nbsp;<input ng-if="task.completed == 1" type="checkbox" checked><input ng-if="task.completed == 0" type="checkbox"></span></span></li>
+  <li  class="list-group-item"><b>Title</b><span style="color:#333" class="badge"><span title="view"><b>V</b></span>&nbsp;&nbsp;&nbsp;<span title="completed"><b>C</b></span></span></li>
+  <li ng-repeat="task in tasks" class="list-group-item">{{ task.title }} <span class="badge"><a href="#!view/{{ task.id }}" style="display:table-cell; vertical-align:middle;"><i class="fa fa-eye"></i></a>&nbsp;&nbsp;<input  id="{{task.id}}"  ng-model="checked" ng-click="toggleSelection(task.id)" ng-init="checked[task.id]=false" ng-if="task.completed == 0" type="checkbox">
+		<input  id="{{task.id}}"  ng-model="checked" ng-click="toggleSelection(task.id)" ng-init="checked[task.id]=true" ng-if="task.completed == 1" type="checkbox" ng-checked="true"></span></span></li>
 </ul>
+<div ng-if="alertUpdateTask">
+	<p class="alert alert-success">{{alertUpdateTask}}</p>
+</div>

@@ -1,8 +1,8 @@
 <ul class="list-group">
-  {{a}}
+  <li style="background-color: #337ab7; color:#fff" class="list-group-item"><b>Task</b></li>
   <li class="list-group-item">ID: {{ task.id }}</li>
   <li class="list-group-item">Titel: {{ task.title }}</li>
-   <li class="list-group-item">Category: {{ task.category }}</li>
-    <li class="list-group-item">Date: {{ task.date }}</li>
-	 <li class="list-group-item">completed: {{ task.completed==1? "yes": "no" }}</li>
+  <li class="list-group-item">Category: {{ task.category }}</li>
+  <li class="list-group-item">Date: {{ task.date }}</li>
+  <li class="list-group-item">completed: {{ task.completed==1? "yes": "no" }}</li>
 </ul>

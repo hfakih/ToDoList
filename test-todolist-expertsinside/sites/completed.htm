@@ -1,10 +1,9 @@
-
 <table class="table table-hover hide-xs">
 <thead>
   <tr>
 	<th class="th-title-sm th-title-md th-title-lg th-title-xl">Title</th>
-	<th class="th-view-sm th-view-md th-view-lg">View Task</th>
-	<th class="th-set2comp-sm th-set2comp-md th-set2comp-lg th-set2comp-xl">Set Task To Completed</th>
+	<th class="th-view th-view-sm th-view-md th-view-lg">View</th>
+	<th class="th-set2comp th-set2comp-sm th-set2comp-md th-set2comp-lg th-set2comp-xl">Completed</th>
   </tr>
 </thead>
 <tbody>
@@ -14,11 +13,15 @@
 	
 	
 	<td  class="td-set2comp td-set2comp-sm td-set2comp-md td-set2comp-lg td-set2comp-xl">
-		<input type="checkbox" checked>
+		<input  id="{{task.id}}"  ng-model="checked" ng-click="toggleSelection(task.id)" ng-init="checked[task.id]=true" ng-if="task.completed == 1" type="checkbox" ng-checked="true">
+		
 	</td>
   </tr>						  
 </tbody>
 </table>
 <ul class="list-group show-xs hide-sm hide-md hide-lg hide-xl" style="margin-top:12px;">
-  <li ng-repeat="task in completedTasks" class="list-group-item">{{ task.title }} <span class="badge"><a href="#!view/{{ task.id }}" style="display:table-cell; vertical-align:middle;"><i class="fa fa-eye"></i></a>&nbsp;&nbsp;<input type="checkbox" checked></span></span></li>
+  <li ng-repeat="task in completedTasks" class="list-group-item">{{ task.title }} <span class="badge"><a href="#!view/{{ task.id }}" style="display:table-cell; vertical-align:middle;"><i class="fa fa-eye"></i></a>&nbsp;&nbsp;<input  id="{{task.id}}"  ng-model="checked" ng-click="toggleSelection(task.id)" ng-init="checked[task.id]=true" ng-if="task.completed == 1" type="checkbox" ng-checked="true"></span></span></li>
 </ul>
+<div ng-if="alertUpdateTask">
+	<p class="alert alert-success">{{alertUpdateTask}}</p>
+</div>

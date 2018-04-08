@@ -8,7 +8,7 @@
 			echo 'there is no completed tasks to remove!';	
 		}
 		else{
-			echo $dbhandle->affected_rows.' completed tasks removed!';
+			echo $dbhandle->affected_rows.' completed task(s) removed!';
 		}
 	}
 	else{

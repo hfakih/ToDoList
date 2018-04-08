@@ -30,11 +30,11 @@
     <![endif]-->
   </head>
   <body>
-	<div class="container">
+	<div ng-app="toDoListApp"  ng-controller="categories" class="container">
 		<div class="row">
 			<h2 style="text-align:center">ToDo-List</h2>
 		</div>
-		<div ng-app="toDoListApp"  ng-controller="categories" class="row">
+		<div class="row">
 			<div class="col-md-4 col-lg-4 col-xl-4">
 				<div class="btn-group">
 					  <a href="#!add" class="btn btn-primary btn-feature-xs btn-feature-sm btn-feature-md btn-feature-lg">Create New</a>
@@ -47,6 +47,9 @@
 			<div  class="col-md-8 col-lg-8"> 
 				 <div ng-view></div> 
 			</div>
+		</div>
+		<div ng-if="alertInfo"  class="row">
+			<p class="alert alert-info">{{ alertInfo }}</p>
 		</div>
 	</div>  
   
@@ -74,7 +77,6 @@
 		});
 		
 		app.controller('view',function($scope,$http,$routeParams){
-			
 			$scope.viewTaskById=function(id){
 				$http.get('scripts/view.php?id='+id).then(function(response){
 				
@@ -122,7 +124,7 @@
 			
 				$scope.deleteCompletedTasks = function(){
 					$http.get('scripts/deleteCompleted.php').then(function(response){
-						$scope.deleteCompletedMsg = response.data;
+						$scope.alertDeleteCompleted = response.data;
 						$scope.listTasks();	
 					})
 				}
@@ -130,6 +132,7 @@
 				$scope.deleteCompletedTasks();
 		});
 		app.controller('categories',function($scope,$http,$timeout){
+				$scope.alertUpdateTask="";
 				
 				$scope.getCategories = function(){
 					$http.get('scripts/categories.php').then(function(response){
@@ -152,7 +155,7 @@
 					}
 					$scope.updateTaskById = function(id){
 						$http.get('scripts/update.php?id='+ $scope.id + "&completed=" + $scope.completed).then(function(response){
-							$scope.mainMsg = response.data;						
+							$scope.alertUpdateTask = response.data;						
 						})		
 					}
 					$scope.updateTaskById($scope.id);

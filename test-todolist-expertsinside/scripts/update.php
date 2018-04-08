@@ -7,7 +7,7 @@
 	$sql = "UPDATE tasks SET completed=".$completed." WHERE id=".$id;  
 	
 	if($result = $dbhandle->query($sql)){
-		echo 'task  with ID '. $id .'updated';
+		echo 'Task  with ID '. $id .' updated!';
 	}
 	else{
 		echo 'Unable to update task!';
